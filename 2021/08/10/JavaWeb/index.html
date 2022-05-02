@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"sundael.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="java基础 1. Junit 单元测试 @Before 资源的申请 @After 资源的释放 2. 注解 编译检查 代码分析 编写文档 JDK中预定义的一些注解 1234* @Override：检测被该注解标注的方法是否是继承自父类(接口)的* @Deprecated：该注解标注的内容，表示已过时* @SuppressWarnings：压制警告一般传递参数all  @Suppre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb">
+<meta property="og:url" content="https://sundael.github.io/2021/08/10/JavaWeb/index.html">
+<meta property="og:site_name" content="sundael">
+<meta property="og:description" content="java基础 1. Junit 单元测试 @Before 资源的申请 @After 资源的释放 2. 注解 编译检查 代码分析 编写文档 JDK中预定义的一些注解 1234* @Override：检测被该注解标注的方法是否是继承自父类(接口)的* @Deprecated：该注解标注的内容，表示已过时* @SuppressWarnings：压制警告一般传递参数all  @Suppre">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-10T10:28:36.000Z">
+<meta property="article:modified_time" content="2021-09-01T07:45:09.741Z">
+<meta property="article:author" content="solo">
+<meta property="article:tag" content="javaweb">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://sundael.github.io/2021/08/10/JavaWeb/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://sundael.github.io/2021/08/10/JavaWeb/","path":"2021/08/10/JavaWeb/","title":"JavaWeb"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaWeb | sundael</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">sundael</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">java基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">MySQL基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ddl-%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="nav-number">2.1.</span> <span class="nav-text">DDL: 操作数据库、表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dml%E5%A2%9E%E5%88%A0%E6%94%B9%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE"><span class="nav-number">2.2.</span> <span class="nav-text">DML：增删改表中数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dql%E6%9F%A5%E8%AF%A2%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%AE%B0%E5%BD%95"><span class="nav-number">2.3.</span> <span class="nav-text">DQL：查询表中的记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F"><span class="nav-number">2.4.</span> <span class="nav-text">约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.5.</span> <span class="nav-text">数据库的设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.6.</span> <span class="nav-text">多表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">2.7.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dcl%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83"><span class="nav-number">2.8.</span> <span class="nav-text">DCL：管理用户，授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jdbc"><span class="nav-number">2.9.</span> <span class="nav-text">JDBC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="nav-number">2.10.</span> <span class="nav-text">数据库连接池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html"><span class="nav-number">3.</span> <span class="nav-text">HTML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css"><span class="nav-number">4.</span> <span class="nav-text">CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javascript"><span class="nav-number">5.</span> <span class="nav-text">Javascript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bootstrap"><span class="nav-number">6.</span> <span class="nav-text">Bootstrap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xml"><span class="nav-number">7.</span> <span class="nav-text">xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tomcat"><span class="nav-number">8.</span> <span class="nav-text">tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#servlet"><span class="nav-number">9.</span> <span class="nav-text">Servlet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsp-el%E8%A1%A8%E8%BE%BE%E5%BC%8F-jstl"><span class="nav-number">10.</span> <span class="nav-text">JSP &amp; EL表达式 &amp; JSTL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filterlistener"><span class="nav-number">11.</span> <span class="nav-text">Filter&amp;Listener</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jquery"><span class="nav-number">12.</span> <span class="nav-text">JQuery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ajax%E5%92%8Cjson"><span class="nav-number">13.</span> <span class="nav-text">AJAX和JSON</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="solo"
+      src="/images/3.jpg">
+  <p class="site-author-name" itemprop="name">solo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/981450245@qq.com" title="E-Mail → 981450245@qq.com">E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sundael.github.io/2021/08/10/JavaWeb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/3.jpg">
+      <meta itemprop="name" content="solo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sundael">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaWeb
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-10 18:28:36" itemprop="dateCreated datePublished" datetime="2021-08-10T18:28:36+08:00">2021-08-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-01 15:45:09" itemprop="dateModified" datetime="2021-09-01T15:45:09+08:00">2021-09-01</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="java基础">java基础</h2>
+<p><strong>1. Junit 单元测试</strong><br>
+<span class="citation" data-cites="Before">@Before</span> 资源的申请 <span class="citation" data-cites="After">@After</span> 资源的释放</p>
+<p><strong>2. 注解</strong><br>
+编译检查<br>
+代码分析<br>
+编写文档<br>
+JDK中预定义的一些注解<br>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* <span class="variable">@Override</span>：检测被该注解标注的方法是否是继承自父类(接口)的</span><br><span class="line">* <span class="variable">@Deprecated</span>：该注解标注的内容，表示已过时</span><br><span class="line">* <span class="variable">@SuppressWarnings</span>：压制警告</span><br><span class="line">一般传递参数all  <span class="variable">@SuppressWarnings</span>(<span class="string">&quot;all&quot;</span>)</span><br></pre></td></tr></table></figure> <span id="more"></span> 元注解：用于描述注解的注解<br>
+* <span class="citation" data-cites="Target">@Target</span>：描述注解能够作用的位置<br>
+ElementType取值：TYPE：可以作用于类上 , METHOD：可以作用于方法上, FIELD：可以作用于成员变量上<br>
+* <span class="citation" data-cites="Retention">@Retention</span>：描述注解被保留的阶段<br>
+<span class="citation" data-cites="Retention">@Retention</span>(RetentionPolicy.RUNTIME)：当前被描述的注解，会保留到class字节码文件中，并被JVM读取到<br>
+* <span class="citation" data-cites="Documented">@Documented</span>：描述注解是否被抽取到api文档中<br>
+* <span class="citation" data-cites="Inherited">@Inherited</span>：描述注解是否被子类继承</p>
+<h2 id="mysql基础">MySQL基础</h2>
+<p>net start mysql : 启动mysql的服务<br>
+net stop mysql : 关闭mysql服务<br>
+MySQL登录<br>
+1)mysql -uroot -p密码<br>
+2)mysql -hip -uroot -p连接目标的密码<br>
+3)mysql --host = ip --user=root --password = 连接目标的密码<br>
+|SQL分类 | DDL(Data Definition Language)数据定义语言|DML(Data Manipulation Language)数据操作语言 | DQL(Data Query Language)数据查询语言 |DCL(Data Control Language)数据控制语言| | :----:| :----: | :----: | :----:|:----:| | 说明 | 用来定义数据库对象：数据库，表，列等。| 用来对数据库中表的数据进行增删改。|用来查询数据库中表的记录(数据)。|用来定义数据库的访问权限和安全级别，及创建用户。 | 关键字 | create, drop,alter| insert, delete, update |select, where |GRANT， REVOKE</p>
+<h3 id="ddl-操作数据库表">DDL: 操作数据库、表</h3>
+<ol type="1">
+<li><p>操作数据库：CRUD<br>
+C(Create):创建<br>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> 数据库名称;                   \\创建数据库：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> 数据库名称;     \\创建数据库，判断不存在，再创建</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> 数据库名称 <span class="type">character</span> <span class="keyword">set</span> 字符集名;    \\创建数据库，并指定字符集</span><br></pre></td></tr></table></figure> R(Retrieve)：查询创建数据库，并指定字符集<br>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show </span>databases<span class="comment">;                        \\查询所有数据库的名称:</span></span><br><span class="line"><span class="keyword">show </span>create database 数据库名称<span class="comment">;        \\查询某个数据库的字符集:查询某个数据库的创建语句</span></span><br></pre></td></tr></table></figure> U(Update):修改 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> 数据库名称 <span class="type">character</span> <span class="keyword">set</span> 字符集名称;         \\修改数据库的字符集</span><br></pre></td></tr></table></figure> D(Delete):删除 <figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">database</span> 数据库名称;               \\数据库名称;</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">database</span> <span class="keyword">if</span> <span class="keyword">exists</span> 数据库名称;     \\判断数据库存在，存在再删除</span><br></pre></td></tr></table></figure> 使用数据库 <figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> database()<span class="comment">;      \\查询当前正在使用的数据库名称</span></span><br><span class="line">use 数据库名称<span class="comment">;          \\使用数据库</span></span><br></pre></td></tr></table></figure></p></li>
+<li><p>操作表 C(Create):创建 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名(列名<span class="number">1</span> 数据类型<span class="number">1</span>,列名<span class="number">2</span> 数据类型<span class="number">2</span>,....列名n 数据类型n);</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名 <span class="keyword">like</span> 被复制的表名;	  \\复制表</span><br></pre></td></tr></table></figure> R(Retrieve)：查询 <figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show </span>tables<span class="comment">;                        \\查询某个数据库中所有的表名称</span></span><br><span class="line">desc 表名<span class="comment">;                          \\查询表结构</span></span><br></pre></td></tr></table></figure> U(Update):修改 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 修改表名  </span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> 表名 rename <span class="keyword">to</span> 新的表名;</span><br><span class="line"><span class="number">2.</span> 修改表的字符集</span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="type">character</span> <span class="keyword">set</span> 字符集名称;</span><br><span class="line"><span class="number">3.</span> 添加一列</span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span> 列名 数据类型;</span><br><span class="line"><span class="number">4.</span> 修改列名称 类型</span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> 表名 change 列名 新列别 新数据类型;</span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> 表名 modify 列名 新数据类型;</span><br><span class="line"><span class="number">5.</span> 删除列</span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> 列名;</span><br></pre></td></tr></table></figure> D(Delete):删除 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> 表名;</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span>  <span class="keyword">if</span> <span class="keyword">exists</span> 表名 ;</span><br></pre></td></tr></table></figure> 使用数据库 <figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> database()<span class="comment">;      \\查询当前正在使用的数据库名称</span></span><br><span class="line">use 数据库名称<span class="comment">;          \\使用数据库</span></span><br></pre></td></tr></table></figure></p></li>
+</ol>
+<h3 id="dml增删改表中数据">DML：增删改表中数据</h3>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名(列名<span class="number">1</span>,列名<span class="number">2</span>,...列名n) <span class="keyword">values</span>(值<span class="number">1</span>,值<span class="number">2</span>,...值n);  添加数据</span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名 [<span class="keyword">where</span> 条件]                                  删除数据  </span><br><span class="line"><span class="keyword">update</span> 表名 <span class="keyword">set</span> 列名<span class="number">1</span> = 值<span class="number">1</span>, 列名<span class="number">2</span> = 值<span class="number">2</span>,... [<span class="keyword">where</span> 条件];      修改数据</span><br></pre></td></tr></table></figure>
+<h3 id="dql查询表中的记录">DQL：查询表中的记录</h3>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">    字段列表</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    表名列表</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">    条件列表</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">    分组字段</span><br><span class="line"><span class="keyword">having</span></span><br><span class="line">    分组之后的条件</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line">    排序</span><br><span class="line"><span class="keyword">limit</span></span><br><span class="line">    分页限定</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li><p>排序查询<br>
+<strong>语法：order by 子句</strong><br>
+order by 排序字段1 排序方式1 ， 排序字段2 排序方式2...<br>
+排序方式：ASC：升序，默认的。 DESC：降序。</p></li>
+<li><p>聚合函数：将一列数据作为一个整体，进行纵向的计算。<br>
+count：计算个数<br>
+max：计算最大值<br>
+min：计算最小值<br>
+sum：计算和<br>
+avg：计算平均值<br>
+注意：聚合函数的计算，排除null值。<br>
+解决方案：选择不包含非空的列进行计算,IFNULL函数</p></li>
+<li><p>分组查询:<br>
+<strong>语法：group by 分组字段；</strong> 分组之后查询的字段：分组字段、聚合函数<br>
+where 和 having 的区别？<br>
+where 在分组之前进行限定，如果不满足条件，则不参与分组。having在分组之后进行限定，如果不满足结果，则不会被查询出来<br>
+where 后不可以跟聚合函数，having可以进行聚合函数的判断。</p></li>
+<li><p>分页查询<br>
+<strong>语法：limit 开始的索引,每页查询的条数;</strong><br>
+公式：开始的索引 = （当前的页码 - 1） * 每页显示的条数</p></li>
+</ol>
+<h3 id="约束">约束</h3>
+<p>对表中的数据进行限定，保证数据的正确性、有效性和完整性.<br>
+1. 非空约束：<strong>not null</strong>，某一列的值不能为null <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">\\创建表时添加约束</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> stu(</span><br><span class="line">    id <span class="type">INT</span>,</span><br><span class="line">    NAME <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="comment">-- name为非空</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">\\创建表完后，添加非空约束</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY NAME <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>;</span><br><span class="line"></span><br><span class="line">\\删除name的非空约束</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY NAME <span class="type">VARCHAR</span>(<span class="number">20</span>);</span><br></pre></td></tr></table></figure> 2. 唯一约束：<strong>unique</strong>，某一列的值不能重复<br>
+唯一约束可以有NULL值，但是只能有一条记录为null <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">\\在创建表时，添加唯一约束</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> stu(</span><br><span class="line">    id <span class="type">INT</span>,</span><br><span class="line">    phone_number <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">UNIQUE</span> <span class="comment">-- 手机号</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">\\删除唯一约束</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu <span class="keyword">DROP</span> INDEX phone_number;</span><br><span class="line"></span><br><span class="line">\\在表创建完后，添加唯一约束</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY phone_number <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">UNIQUE</span>;</span><br></pre></td></tr></table></figure> 3. 主键约束：<strong>primary key</strong><br>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\\在创建表时，添加主键约束</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> stu(</span><br><span class="line">    id <span class="type">int</span> <span class="keyword">primary</span> key,<span class="comment">-- 给id添加主键约束</span></span><br><span class="line">    name <span class="type">varchar</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">\\删除主键</span><br><span class="line"><span class="comment">-- 错误 alter table stu modify id int ;</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY;</span><br><span class="line"></span><br><span class="line">\\创建完表后，添加主键</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY;</span><br></pre></td></tr></table></figure> 自动增长:<br>
+概念：如果某一列是数值类型的，使用 auto_increment 可以来完成值得自动增长<br>
+4. 外键约束：<strong>foreign key</strong>,让表于表产生关系，从而保证数据的正确性。<br>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">\\在创建表时，可以添加外键</span><br><span class="line"><span class="meta">create</span> <span class="meta">table</span> 表名(</span><br><span class="line">    constraint 外键名称 <span class="meta">foreign</span> <span class="meta">key</span> (外键列名称) <span class="meta">references</span> 主表名称(主表列名称)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">\\删除外键</span><br><span class="line"><span class="meta">ALTER</span> <span class="meta">TABLE</span> 表名 <span class="meta">DROP</span> <span class="meta">FOREIGN</span> <span class="meta">KEY</span> 外键名称;</span><br><span class="line"></span><br><span class="line">\\创建表之后，添加外键</span><br><span class="line"><span class="meta">ALTER</span> <span class="meta">TABLE</span> 表名 <span class="meta">ADD</span> CONSTRAINT 外键名称 <span class="meta">FOREIGN</span> <span class="meta">KEY</span> (外键字段名称) <span class="meta">REFERENCES</span> 主表名称(主表列名称);</span><br><span class="line"></span><br><span class="line">\\级联操作</span><br><span class="line">\\添加级联操作</span><br><span class="line"> <span class="meta">ALTER</span> <span class="meta">TABLE</span> 表名 <span class="meta">ADD</span> CONSTRAINT 外键名称 <span class="meta">FOREIGN</span> <span class="meta">KEY</span> (外键字段名称) <span class="meta">REFERENCES</span> 主表名称(主表列名称) <span class="meta">ON</span> <span class="meta">UPDATE</span> <span class="meta">CASCADE</span> <span class="meta">ON</span> <span class="meta">DELETE</span> <span class="meta">CASCADE</span>  ;</span><br><span class="line">1. 级联更新：<span class="meta">ON</span> <span class="meta">UPDATE</span> <span class="meta">CASCADE</span> </span><br><span class="line">2. 级联删除：<span class="meta">ON</span> <span class="meta">DELETE</span> <span class="meta">CASCADE</span> </span><br></pre></td></tr></table></figure></p>
+<h3 id="数据库的设计">数据库的设计</h3>
+<ol type="1">
+<li>一对多(多对一)：<br>
+实现方式：在多的一方建立<strong>外键</strong>，指向一的一方的<strong>主键</strong>。</li>
+<li>多对多：<br>
+实现方式：多对多关系实现需要借助<strong>第三张中间表</strong>。中间表至少包含两个字段，这两个字段作为第三张表的<strong>外键</strong>，分别指向两张表的<strong>主键</strong></li>
+<li>数据库设计的范式<br>
+第一范式（1NF）：每一列都是不可分割的原子数据项<br>
+第二范式（2NF）：在1NF的基础上，非码属性必须完全依赖于码（在1NF基础上<strong>消除非主属性对主码的部分函数依赖</strong>）<br>
+第三范式（3NF）：在2NF基础上，任何非主属性不依赖于其它非主属性（在2NF基础上<strong>消除传递依赖</strong>）</li>
+</ol>
+<h3 id="多表查询">多表查询</h3>
+<p>多表查询的分类：<br>
+1. 内连接查询：<br>
+隐式内连接：使用<strong>where</strong>条件消除无用数据<br>
+显式内连接：select 字段列表 from 表名1 [inner] join 表名2 on 条件<br>
+2. 外链接查询：<br>
+左外连接：select 字段列表 from 表1 left [outer] join 表2 on 条件；<br>
+查询的是左表所有数据以及其交集部分。<br>
+右外连接：select 字段列表 from 表1 right [outer] join 表2 on 条件；<br>
+查询的是右表所有数据以及其交集部分。<br>
+3. 子查询：查询中嵌套查询，称嵌套查询为子查询。</p>
+<table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">子查询的结果</th>
+<th style="text-align: center;">单行单列</th>
+<th style="text-align: center;">多行单列</th>
+<th style="text-align: center;">多行多列</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">说明</td>
+<td style="text-align: center;">子查询可以作为条件，使用运算符去判断。 运算符： &gt; &gt;= &lt; &lt;= =</td>
+<td style="text-align: center;">子查询可以作为条件，使用运算符in来判断</td>
+<td style="text-align: center;">子查询可以作为一张虚拟表参与查询</td>
+</tr>
+</tbody>
+</table>
+<h3 id="事务">事务</h3>
+<p>操作：1. 开启事务： start transaction; 2. 回滚：rollback; 3. 提交：commit;<br>
+事务的四大特征：<br>
+1.原子性：是不可分割的最小操作单位，要么同时成功，要么同时失败。 2.持久性：当事务提交或回滚后，数据库会持久化的保存数据。 3.隔离性：多个事务之间。相互独立。 4.一致性：事务操作前后，数据总量不变</p>
+<h3 id="dcl管理用户授权">DCL：管理用户，授权</h3>
+<ol type="1">
+<li>管理用户:<br>
+添加用户：CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';<br>
+删除用户：语法：DROP USER '用户名'@'主机名';<br>
+修改用户密码：UPDATE USER SET PASSWORD = PASSWORD('新密码') WHERE USER = '用户名';<br>
+查询用户：<br>
+1.切换到mysql数据库 USE myql;<br>
+2.查询user表 SELECT * FROM USER;</li>
+<li>权限管理：</li>
+</ol>
+<h3 id="jdbc">JDBC</h3>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 导入驱动jar包</span></span><br><span class="line"><span class="comment">//2.注册驱动</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">Class</span>.</span></span><span class="keyword">for</span><span class="constructor">Name(<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>)</span>;</span><br><span class="line"><span class="comment">//3.获取数据库连接对象</span></span><br><span class="line">Connection conn = <span class="module-access"><span class="module"><span class="identifier">DriverManager</span>.</span></span>get<span class="constructor">Connection(<span class="string">&quot;jdbc:mysql://localhost:3306/db3&quot;</span>, <span class="string">&quot;root&quot;</span>, <span class="string">&quot;root&quot;</span>)</span>;</span><br><span class="line"><span class="comment">//4.定义sql语句</span></span><br><span class="line">String sql = <span class="string">&quot;update account set balance = 500 where id = 1&quot;</span>;</span><br><span class="line"><span class="comment">//5.获取执行sql的对象 Statement</span></span><br><span class="line">Statement stmt = conn.create<span class="constructor">Statement()</span>;</span><br><span class="line"><span class="comment">//6.执行sql</span></span><br><span class="line"><span class="built_in">int</span> count = stmt.execute<span class="constructor">Update(<span class="params">sql</span>)</span>;</span><br><span class="line"><span class="comment">//7.处理结果</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(count);</span><br><span class="line"><span class="comment">//8.释放资源</span></span><br><span class="line">stmt.close<span class="literal">()</span>;</span><br><span class="line">conn.close<span class="literal">()</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="数据库连接池">数据库连接池</h3>
+<ol type="1">
+<li>C3P0：数据库连接池技术 1)导入jar包 (两个) c3p0-0.9.5.2.jar mchange-commons-java-0.2.12.jar ，
+<ul>
+<li>不要忘记导入数据库驱动jar包<br>
+2)定义配置文件：<br>
+</li>
+<li>名称： c3p0.properties 或者 c3p0-config.xml</li>
+<li>路径：直接将文件放在src目录下即可。<br>
+3)创建数据库连接池对象<br>
+DataSource ds = new ComboPooledDataSource(); 4)获取连接对象<br>
+Connection conn = ds.getConnection();<br>
+</li>
+</ul></li>
+<li>Druid：数据库连接池实现技术，由阿里巴巴提供的<br>
+</li>
+</ol>
+<ol type="1">
+<li>导入jar包 druid-1.0.9.jar<br>
+</li>
+<li>定义配置文件：
+<ul>
+<li>是properties形式的</li>
+<li>可以叫任意名称，可以放在任意目录下 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//3.加载配置文件</span></span><br><span class="line">Properties pro = <span class="keyword">new</span> <span class="constructor">Properties()</span>;</span><br><span class="line">InputStream is = <span class="module-access"><span class="module"><span class="identifier">DruidDemo</span>.</span></span><span class="keyword">class</span>.get<span class="constructor">ClassLoader()</span>.get<span class="constructor">ResourceAsStream(<span class="string">&quot;druid.properties&quot;</span>)</span>;</span><br><span class="line">pro.load(is);</span><br><span class="line"><span class="comment">//4.获取连接池对象</span></span><br><span class="line">DataSource ds = <span class="module-access"><span class="module"><span class="identifier">DruidDataSourceFactory</span>.</span></span>create<span class="constructor">DataSource(<span class="params">pro</span>)</span>;</span><br><span class="line"><span class="comment">//5.获取连接</span></span><br><span class="line">Connection conn = ds.get<span class="constructor">Connection()</span>;</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+</ol>
+<ol start="3" type="1">
+<li>Spring JDBC</li>
+</ol>
+<ol type="1">
+<li>导入jar包<br>
+</li>
+<li>创建JdbcTemplate对象。依赖于数据源DataSource<br>
+</li>
+</ol>
+<ul>
+<li>JdbcTemplate template = new JdbcTemplate(ds);<br>
+</li>
+</ul>
+<ol start="3" type="1">
+<li>调用JdbcTemplate的方法来完成CRUD的操作<br>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span>():执行DML语句。增、删、改语句</span><br><span class="line">queryForMap():查询结果将结果集封装为map集合，将列名作为key，将值作为value 将这条记录封装为一个map集合</span><br><span class="line"><span class="comment">    * 注意：这个方法查询的结果集长度只能是1</span></span><br><span class="line">queryForList():查询结果将结果集封装为<span class="keyword">list</span>集合</span><br><span class="line"><span class="comment">    * 注意：将每一条记录封装为一个Map集合，再将Map集合装载到List集合中</span></span><br><span class="line"><span class="keyword">query</span>():查询结果，将结果封装为JavaBean对象</span><br><span class="line"><span class="comment">    * query的参数：RowMapper</span></span><br><span class="line"><span class="comment">        * 一般我们使用BeanPropertyRowMapper实现类。可以完成数据到JavaBean的自动封装</span></span><br><span class="line"><span class="comment">        * new BeanPropertyRowMapper&lt;类型&gt;(类型.class)</span></span><br><span class="line">queryForObject：查询结果，将结果封装为对象</span><br><span class="line"><span class="comment">    * 一般用于聚合函数的查询</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="html">HTML</h2>
+<ol type="1">
+<li>文件标签：构成html最基本的标签<br>
+html:html文档的根标签<br>
+head：头标签。用于指定html文档的一些属性。引入外部的资源<br>
+title：标题标签。<br>
+body：体标签<br>
+ <code>&lt;!DOCTYPE html&gt;：html5中定义该文档是html文档</code></li>
+<li>文本标签：和文本有关的标签 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">&lt;h1&gt;</span> <span class="keyword">to</span> <span class="symbol">&lt;h6&gt;</span>：标题标签</span><br><span class="line">h1~h6:字体大小逐渐递减</span><br><span class="line"><span class="symbol">&lt;p&gt;</span>：段落标签</span><br><span class="line"><span class="symbol">&lt;br&gt;</span>：换行标签</span><br><span class="line"><span class="symbol">&lt;hr&gt;</span>：展示一条水平线</span><br><span class="line">	属性：</span><br><span class="line">		* color：颜色</span><br><span class="line">		* width：宽度</span><br><span class="line">		* size：高度</span><br><span class="line">		* align：对其方式</span><br><span class="line">			* <span class="keyword">center</span>：居中</span><br><span class="line">			* <span class="keyword">left</span>：左对齐</span><br><span class="line">			* <span class="keyword">right</span>：右对齐</span><br><span class="line"><span class="symbol">&lt;b&gt;</span>：字体加粗</span><br><span class="line"><span class="symbol">&lt;i&gt;</span>：字体斜体</span><br><span class="line"><span class="symbol">&lt;font&gt;</span>:字体标签</span><br><span class="line"><span class="symbol">&lt;center&gt;</span>:文本居中</span><br></pre></td></tr></table></figure></li>
+<li>图片标签：<br>
+<code>&lt;img src="image/jingxuan_2.jpg" align="right" alt="古镇" width="500" height="500"/&gt;</code></li>
+<li>列表标签： 有序列表：ol<br>
+无序列表：ul</li>
+<li>链接标签：<br>
+<code>&lt;a href="http://www.itcast.cn"&gt;&lt;img src="image/jiangwai_1.jpg"&gt;&lt;/a&gt;</code></li>
+<li>div和span：<br>
+div:每一个div占满一整行。块级标签<br>
+span：文本信息在一行展示，行内标签 内联标签<br>
+</li>
+<li>语义化标签：html5中为了提高程序的可读性，提供了一些标签。<br>
+
+<header>
+：页眉<br>
+
+<footer>
+：页脚<br>
+</footer></header></li>
+<li>表格标签： <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">table</span>：定义表格</span><br><span class="line"><span class="comment">    * width：宽度</span></span><br><span class="line"><span class="comment">    * border：边框</span></span><br><span class="line"><span class="comment">    * cellpadding：定义内容和单元格的距离</span></span><br><span class="line"><span class="comment">    * cellspacing：定义单元格之间的距离。如果指定为0，则单元格的线会合为一条、</span></span><br><span class="line"><span class="comment">    * bgcolor：背景色</span></span><br><span class="line"><span class="comment">    * align：对齐方式</span></span><br><span class="line">tr：定义行</span><br><span class="line"><span class="comment">    * bgcolor：背景色</span></span><br><span class="line"><span class="comment">    * align：对齐方式</span></span><br><span class="line">td：定义单元格</span><br><span class="line"><span class="comment">    * colspan：合并列</span></span><br><span class="line"><span class="comment">    * rowspan：合并行</span></span><br><span class="line">th：定义表头单元格</span><br><span class="line">&lt;caption&gt;：表格标题</span><br><span class="line">&lt;thead&gt;：表示表格的头部分</span><br><span class="line">&lt;tbody&gt;：表示表格的体部分</span><br><span class="line">&lt;tfoot&gt;：表示表格的脚部分</span><br></pre></td></tr></table></figure></li>
+<li>表单标签<br>
+<strong>input：</strong> 可以通过type属性值，改变元素展示的样式<br>
+  type属性：<br>
+  text：文本输入框，默认值<br>
+  password：密码输入框<br>
+  radio:单选框<br>
+  checkbox：复选框<br>
+  file：文件选择框<br>
+  hidden：隐藏域，用于提交一些信息。<br>
+  按钮：submit;button;image<br>
+<strong>select:</strong> 下拉列表<br>
+<strong>textarea：</strong> 文本域</li>
+</ol>
+<h2 id="css">CSS</h2>
+<p>选择器 { 属性名1:属性值1;<br>
+属性名2:属性值2;<br>
+... } <strong>基础选择器</strong> 1.id选择器：#id属性值{}<br>
+2.元素选择器：标签名称{}<br>
+3.类选择器：.class属性值{}<br>
+<strong>扩展选择器</strong></p>
+<h2 id="javascript">Javascript</h2>
+<p><strong>1. 数据类型：</strong></p>
+<pre><code>1. 原始数据类型(基本数据类型)：  
+    1. number：数字。 整数/小数/NaN(not a number 一个不是数字的数字类型)  
+    2. string：字符串。 字符串  &quot;abc&quot; &quot;a&quot; &#39;abc&#39;  
+    3. boolean: true和false  
+    4. null：一个对象为空的占位符  
+    5. undefined：未定义。如果一个变量没有给初始化值，则会被默认赋值为undefined  
+    
+2. 引用数据类型：对象  </code></pre>
+<p><strong>2. 基本对象：</strong></p>
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">基本对象</th>
+<th style="text-align: center;">Function</th>
+<th style="text-align: center;">Array</th>
+<th style="text-align: center;">Date</th>
+<th style="text-align: center;">Math</th>
+<th style="text-align: center;">RegExp</th>
+<th style="text-align: center;">Global</th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">创建</td>
+<td style="text-align: center;">function 方法名称(形式参数列表){}</td>
+<td style="text-align: center;">var arr = new Array(元素列表);var arr = new Array(默认长度);var arr = [元素列表];</td>
+<td style="text-align: center;">var date = new Date();</td>
+<td style="text-align: center;">Math.方法名()</td>
+<td style="text-align: center;">var reg = new RegExp("正则表达式"); var reg = /正则表达式/;</td>
+<td style="text-align: center;">不需要对象就可以直接调用</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">方法&amp;属性</td>
+<td style="text-align: center;">length:代表形参的个数</td>
+<td style="text-align: center;">join(参数):拼接字符串；push()：添加一个或更多元素，并返回新的长度。</td>
+<td style="text-align: center;">toLocaleString() getTime()</td>
+<td style="text-align: center;">random() ceil(x) floor(x) round(x)</td>
+<td style="text-align: center;">test(参数):验证指定的字符串是否符合正则定义的规范</td>
+<td style="text-align: center;">encodeURI() encodeURIComponent() parseInt() eval()</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">特点</td>
+<td style="text-align: center;">内置对象（数组），arguments,封装所有的实际参数</td>
+<td style="text-align: center;">数组元素的类型可变。数组长度可变。</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">单个数字字符 [0-9] :单个单词字符[a-zA-Z0-9_] ^:开始 $:结束</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p><strong>3. DOM：Document Object Model 文档对象模型</strong><br>
+document.getElementById("id值"):通过元素的id获取元素对象<br>
+修改属性值<br>
+修改标签体内容：使用innerHTML属性修改标签体内容 方法： 1.获取Element对象： <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">getElementById</span><span class="params">()</span></span>	： 根据id属性值获取元素对象。id属性值一般唯一</span><br><span class="line"><span class="function"><span class="title">getElementsByTagName</span><span class="params">()</span></span>：根据元素名称获取元素对象们。返回值是一个数组</span><br><span class="line"><span class="function"><span class="title">getElementsByClassName</span><span class="params">()</span></span>:根据Class属性值获取元素对象们。返回值是一个数组</span><br><span class="line"><span class="function"><span class="title">getElementsByName</span><span class="params">()</span></span>: 根据name属性值获取元素对象们。返回值是一个数组</span><br></pre></td></tr></table></figure> 2.创建其他DOM对象： <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">createAttribute</span><span class="params">(name)</span></span></span><br><span class="line"><span class="function"><span class="title">createComment</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="title">createElement</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="title">createTextNode</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure> Element：元素对象<br>
+  removeAttribute()：删除属性<br>
+  setAttribute()：设置属性 Node：节点对象，其他5个的父对象 HTML DOM<br>
+1.标签体的设置和获取：innerHTML<br>
+2.使用html元素对象的属性<br>
+3.控制元素样式<br>
+ 使用元素的style属性来设置<br>
+ 提前定义好类选择器的样式，通过元素的className属性来设置其class属性值</p>
+<p><strong>4. BOM ：Browser Object Model 浏览器对象模型</strong></p>
+<p>Window：窗口对象 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 与弹出框有关的方法：</span><br><span class="line"><span class="function"><span class="title">alert</span><span class="params">()</span></span>	显示带有一段消息和一个确认按钮的警告框。</span><br><span class="line"><span class="function"><span class="title">confirm</span><span class="params">()</span></span>	显示带有一段消息以及确认按钮和取消按钮的对话框。</span><br><span class="line"><span class="function"><span class="title">prompt</span><span class="params">()</span></span>	显示可提示用户输入的对话框。</span><br><span class="line"><span class="number">2</span>. 与打开关闭有关的方法：</span><br><span class="line"><span class="function"><span class="title">close</span><span class="params">()</span></span>	关闭浏览器窗口。</span><br><span class="line"><span class="function"><span class="title">open</span><span class="params">()</span></span>	打开一个新的浏览器窗口</span><br><span class="line"><span class="number">3</span>. 与定时器有关的方式</span><br><span class="line"><span class="function"><span class="title">setTimeout</span><span class="params">()</span></span>	在指定的毫秒数后调用函数或计算表达式。</span><br><span class="line"><span class="function"><span class="title">clearTimeout</span><span class="params">()</span></span>	取消由 setTimeout() 方法设置的 timeout。</span><br><span class="line"><span class="function"><span class="title">setInterval</span><span class="params">()</span></span>	按照指定的周期（以毫秒计）来调用函数或计算表达式。</span><br><span class="line"><span class="function"><span class="title">clearInterval</span><span class="params">()</span></span>	取消由 setInterval() 设置的 timeout。</span><br></pre></td></tr></table></figure> Location：地址栏对象<br>
+  reload():重新加载当前文档。刷新<br>
+  href:设置或返回完整的 URL<br>
+History：历史记录对象<br>
+  back()：加载 history 列表中的前一个 URL。   forward()：加载 history 列表中的下一个 URL。<br>
+  length：返回当前窗口历史列表中的 URL 数量。</p>
+<h2 id="bootstrap">Bootstrap</h2>
+<ol type="1">
+<li>响应式布局:依赖于栅格系统：将一行平均分成12个格子，可以指定元素占几个格子<br>
+定义容器:  container：两边留白   container-fluid：每一种设备都是100%宽度 定义行: row 定义元素: col-设备代号-格子数目</li>
+<li>CSS样式和JS插件<br>
+全局CSS样式：按钮：class="btn btn-default" 组件：导航条,分页条<br>
+插件: 轮播图</li>
+</ol>
+<h2 id="xml">xml</h2>
+<ol type="1">
+<li>概念：Extensible Markup Language 可扩展标记语言</li>
+<li>语法： 约束：规定xml文档的书写规则<br>
+  DTD:一种简单的约束技术   Schema:一种复杂的约束技术</li>
+<li>解析：操作xml文档，将文档中的数据读取到内存中<br>
+Jsoup：jsoup 是一款Java 的HTML解析器 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 导入jar包</span><br><span class="line"><span class="number">2.</span> 获取Document对象</span><br><span class="line"><span class="number">3.</span> 获取对应的标签Element对象</span><br><span class="line"><span class="number">4.</span> 获取数据</span><br><span class="line"></span><br><span class="line"><span class="comment">//2.1获取student.xml的path</span></span><br><span class="line">String path = <span class="module-access"><span class="module"><span class="identifier">JsoupDemo1</span>.</span></span><span class="keyword">class</span>.get<span class="constructor">ClassLoader()</span>.get<span class="constructor">Resource(<span class="string">&quot;student.xml&quot;</span>)</span>.get<span class="constructor">Path()</span>;</span><br><span class="line"><span class="comment">//2.2解析xml文档，加载文档进内存，获取dom树---&gt;Document</span></span><br><span class="line">Document document = <span class="module-access"><span class="module"><span class="identifier">Jsoup</span>.</span></span>parse(<span class="keyword">new</span> <span class="constructor">File(<span class="params">path</span>)</span>, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line"><span class="comment">//3.获取元素对象 Element</span></span><br><span class="line">Elements elements = document.get<span class="constructor">ElementsByTag(<span class="string">&quot;name&quot;</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//3.1获取第一个name的Element对象</span></span><br><span class="line">Element element = elements.get(<span class="number">0</span>);</span><br><span class="line"><span class="comment">//3.2获取数据</span></span><br><span class="line">String name = element.text<span class="literal">()</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(name);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="tomcat">tomcat</h2>
+<p>部署项目的方式： 1.直接将项目放到webapps目录下即可。 * /hello：项目的访问路径--&gt;虚拟目录 * 简化部署：将项目打成一个war包，再将war包放置到webapps目录下。 * war包会自动解压缩</p>
+<p>2.配置conf/server.xml文件 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Context docBase=&quot;D:\hello&quot; path=&quot;/hehe&quot; /&gt;</span><br></pre></td></tr></table></figure> * docBase:项目存放的路径 * path：虚拟目录`</p>
+<p>3.在conf。在文件中编写 <code>&lt;Context docBase="D:\hello" /&gt;</code> * 虚拟目录：xml文件的名称</p>
+<h2 id="servlet">Servlet</h2>
+<p>概念：运行在服务器端的小程序<br>
+Servlet就是一个接口，定义了Java类被浏览器访问到(tomcat识别)的规则。<br>
+将来我们自定义一个类，实现Servlet接口，复写方法 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> 1.创建JavaEE项目</span><br><span class="line">2.定义一个类，实现Servlet接口  </span><br><span class="line">	* public class ServletDemo1 implements Servlet</span><br><span class="line">3.实现接口中的抽象方法</span><br><span class="line">4.配置Servlet</span><br><span class="line">在web.xml中配置：</span><br><span class="line"><span class="comment">&lt;!--配置Servlet --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>demo1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>cn.itcast.web.servlet.ServletDemo1<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>demo1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/demo1<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure> <strong>Servlet中的生命周期方法：</strong> 1. 被创建：执行init方法，只执行一次 * Servlet什么时候被创建？ * 默认情况下，第一次被访问时，Servlet被创建 * 可以配置执行Servlet的创建时机。 * 在&lt;servlet&gt;标签下配置 1. 第一次被访问时，创建 * &lt;load-on-startup&gt;的值为负数 2. 在服务器启动时，创建 * &lt;load-on-startup&gt;的值为0或正整数</p>
+<pre><code>* Servlet的init方法，只执行一次，说明一个Servlet在内存中只存在一个对象，Servlet是单例的
+    * 多个用户同时访问时，可能存在线程安全问题。
+    * 解决：尽量不要在Servlet中定义成员变量。即使定义了成员变量，也不要对修改值</code></pre>
+<ol start="2" type="1">
+<li>提供服务：执行service方法，执行多次
+<ul>
+<li>每次访问Servlet时，Service方法都会被调用一次。</li>
+</ul></li>
+<li>被销毁：执行destroy方法，只执行一次
+<ul>
+<li>Servlet被销毁时执行。服务器关闭时，Servlet被销毁</li>
+<li>只有服务器正常关闭时，才会执行destroy方法。</li>
+<li>destroy方法在Servlet被销毁之前执行，一般用于释放资源</li>
+</ul></li>
+</ol>
+<p><strong>Request</strong> 1. request对象继承体系结构： ServletRequest -- 接口<br>
+| 继承<br>
+HttpServletRequest -- 接口<br>
+2. request功能 <figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 获取请求消息数据</span><br><span class="line">获取请求行数据</span><br><span class="line"><span class="keyword">String</span> getMethod()             <span class="comment">// 获取请求方式 ：GET</span></span><br><span class="line"><span class="keyword">String</span> getContextPath()        <span class="comment">//获取虚拟目录：/day14</span></span><br><span class="line"><span class="keyword">String</span> getServletPath()        <span class="comment">//获取Servlet路径: /demo1</span></span><br><span class="line"><span class="keyword">String</span> getQueryString()        <span class="comment">//获取get方式请求参数</span></span><br><span class="line"><span class="keyword">String</span> getRequestURI():		   <span class="comment">//获取请求URI</span></span><br><span class="line">StringBuffer getRequestURL()   <span class="comment">//获取请求URL</span></span><br><span class="line">获取请求头数据</span><br><span class="line"><span class="keyword">String</span> getHeader(<span class="keyword">String</span> <span class="keyword">name</span>)  <span class="comment">//通过请求头的名称获取请求头的值</span></span><br><span class="line">Enumeration&lt;<span class="keyword">String</span>&gt; getHeaderNames() <span class="comment">//获取所有的请求头名称</span></span><br><span class="line">获取请求体数据</span><br><span class="line">BufferedReader getReader()           <span class="comment">//获取字符输入流，只能操作字符数据</span></span><br><span class="line">ServletInputStream getInputStream() <span class="comment">//获取字节输入流，可以操作所有类型数据</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span>. 其他功能</span><br><span class="line">获取请求参数通用方式</span><br><span class="line"><span class="number">1</span>. <span class="keyword">String</span> getParameter(<span class="keyword">String</span> <span class="keyword">name</span>)             <span class="comment">//根据参数名称获取参数值    username=zs&amp;password=123</span></span><br><span class="line"><span class="number">2</span>. <span class="keyword">String</span>[] getParameterValues(<span class="keyword">String</span> <span class="keyword">name</span>)     <span class="comment">//根据参数名称获取参数值的数组  hobby=xx&amp;hobby=game</span></span><br><span class="line"><span class="number">3</span>. Enumeration&lt;<span class="keyword">String</span>&gt; getParameterNames()     <span class="comment">//获取所有请求的参数名称</span></span><br><span class="line"><span class="number">4</span>. Map&lt;<span class="keyword">String</span>,<span class="keyword">String</span>[]&gt; getParameterMap()     <span class="comment">//获取所有参数的map集合</span></span><br><span class="line">请求转发</span><br><span class="line">RequestDispatcher getRequestDispatcher(<span class="keyword">String</span> path) <span class="comment">//通过request对象获取请求转发器对象</span></span><br><span class="line"><span class="keyword">forward</span>(ServletRequest request, ServletResponse response) <span class="comment">//使用RequestDispatcher对象来进行转发</span></span><br><span class="line">共享数据</span><br><span class="line">void setAttribute(<span class="keyword">String</span> <span class="keyword">name</span>,<span class="keyword">Object</span> obj)     <span class="comment">//存储数据</span></span><br><span class="line"><span class="keyword">Object</span> getAttitude(<span class="keyword">String</span> <span class="keyword">name</span>)               <span class="comment">//通过键获取值</span></span><br><span class="line">void removeAttribute(<span class="keyword">String</span> <span class="keyword">name</span>)             <span class="comment">//通过键移除键值对</span></span><br><span class="line">获取ServletContext</span><br><span class="line">ServletContext getServletContext()</span><br></pre></td></tr></table></figure> <strong>Response对象</strong> <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set<span class="constructor">Status(<span class="params">int</span> <span class="params">sc</span>)</span>                           <span class="comment">//设置响应行</span></span><br><span class="line">PrintWriter get<span class="constructor">Writer()</span>                     <span class="comment">//字符输出流</span></span><br><span class="line">ServletOutputStream get<span class="constructor">OutputStream()</span>       <span class="comment">//字节输出流</span></span><br></pre></td></tr></table></figure> <strong>ServletContext对象</strong> 概念：代表整个web应用，可以和程序的容器(服务器)来通信<br>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">获取MIME类型</span><br><span class="line"><span class="keyword">String</span> getMimeType(<span class="keyword">String</span> <span class="keyword">file</span>)             </span><br><span class="line">共享数据</span><br><span class="line">setAttribute(<span class="keyword">String</span> <span class="keyword">name</span>,<span class="keyword">Object</span> value)</span><br><span class="line">getAttribute(<span class="keyword">String</span> <span class="keyword">name</span>)</span><br><span class="line">removeAttribute(<span class="keyword">String</span> <span class="keyword">name</span>)</span><br><span class="line">获取文件的真实(服务器)路径</span><br><span class="line"><span class="keyword">String</span> getRealPath(<span class="keyword">String</span> path)  </span><br></pre></td></tr></table></figure> <strong>Cookie&amp;Session</strong> Cookie：客户端会话技术，将数据保存到客户端<br>
+使用步骤： <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 创建Cookie对象，绑定数据</span><br><span class="line"><span class="keyword">new</span> <span class="constructor">Cookie(String <span class="params">name</span>, String <span class="params">value</span>)</span> </span><br><span class="line"><span class="number">2.</span> 发送Cookie对象</span><br><span class="line">response.add<span class="constructor">Cookie(Cookie <span class="params">cookie</span>)</span> </span><br><span class="line"><span class="number">3.</span> 获取Cookie，拿到数据</span><br><span class="line">Cookie<span class="literal">[]</span>  request.get<span class="constructor">Cookies()</span>  </span><br></pre></td></tr></table></figure> Session：服务器端会话技术，在一次会话的多次请求间共享数据，将数据保存在服务器端的对象中<br>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 获取HttpSession对象：</span><br><span class="line">HttpSession session = request.getSession();</span><br><span class="line"><span class="number">2</span>. 使用HttpSession对象：</span><br><span class="line"><span class="keyword">Object</span> getAttribute(<span class="keyword">String</span> <span class="keyword">name</span>)  </span><br><span class="line">void setAttribute(<span class="keyword">String</span> <span class="keyword">name</span>, <span class="keyword">Object</span> value)</span><br><span class="line">void removeAttribute(<span class="keyword">String</span> <span class="keyword">name</span>)  </span><br></pre></td></tr></table></figure></p>
+<h2 id="jsp-el表达式-jstl">JSP &amp; EL表达式 &amp; JSTL</h2>
+<ol type="1">
+<li>JSP内置对象:9个</li>
+</ol>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">变量名</th>
+<th style="text-align: center;">真实类型</th>
+<th style="text-align: center;">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">pageContext</td>
+<td style="text-align: center;">PageContext</td>
+<td style="text-align: center;">当前页面共享数据，还可以获取其他八个内置对象</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">request</td>
+<td style="text-align: center;">HttpServletRequest</td>
+<td style="text-align: center;">一次请求访问的多个资源(转发)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">session</td>
+<td style="text-align: center;">HttpSession</td>
+<td style="text-align: center;">一次会话的多个请求间</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">application</td>
+<td style="text-align: center;">ServletContext</td>
+<td style="text-align: center;">所有用户间共享数据</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">response</td>
+<td style="text-align: center;">HttpServletResponse</td>
+<td style="text-align: center;">响应对象</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">page</td>
+<td style="text-align: center;">Object</td>
+<td style="text-align: center;">当前页面(Servlet)的对象 this</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">out</td>
+<td style="text-align: center;">JspWriter</td>
+<td style="text-align: center;">输出对象，数据输出到页面上</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">config</td>
+<td style="text-align: center;">ServletConfig</td>
+<td style="text-align: center;">Servlet的配置对象</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">exception</td>
+<td style="text-align: center;">Throwable</td>
+<td style="text-align: center;">异常对象</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" type="1">
+<li>EL表达式语法：${表达式} el表达式只能从域对象中获取值<br>
+域名称： pageScope --&gt; pageContext<br>
+requestScope --&gt; request<br>
+sessionScope --&gt; session<br>
+applicationScope --&gt; application（ServletContext）</li>
+</ol>
+<h2 id="filterlistener">Filter&amp;Listener</h2>
+<ol type="1">
+<li>Filter：过滤器 步骤：定义一个类，实现接口Filter；复写方法；配置拦截路径</li>
+<li>Listener：监听器</li>
+</ol>
+<h2 id="jquery">JQuery</h2>
+<ol type="1">
+<li>JQuery和JavaScript两者相互转换<br>
+</li>
+</ol>
+<ul>
+<li>jq -- &gt; js : jq对象[索引] 或者 jq对象.get(索引)<br>
+</li>
+<li>js -- &gt; jq : $(js对象<br>
+</li>
+</ul>
+<ol start="2" type="1">
+<li>选择器：筛选具有相似特征的元素(标签)<br>
+</li>
+<li>DOM操作
+<ol type="1">
+<li>内容操作 1. html(): 获取/设置元素的标签体内容 &lt;a&gt;&lt;font&gt;内容&lt;/font&gt;&lt;/a&gt; --&gt; <font>内容</font> 2. text(): 获取/设置元素的标签体纯文本内容 &lt;a&gt;&lt;font&gt;内容&lt;/font&gt;&lt;/a&gt; --&gt; 内容 3. val()： 获取/设置元素的value属性值
+<ol start="2" type="1">
+<li>属性操作
+<ol type="1">
+<li>通用属性操作
+<ol type="1">
+<li>attr(): 获取/设置元素的属性</li>
+<li>removeAttr():删除属性</li>
+<li>prop():获取/设置元素的属性</li>
+<li>removeProp():删除属性</li>
+</ol>
+<ul>
+<li>attr和prop区别？
+<ol type="1">
+<li>如果操作的是元素的固有属性，则建议使用prop<br>
+</li>
+<li>如果操作的是元素自定义的属性，则建议使用attr<br>
+</li>
+</ol></li>
+</ul></li>
+<li>对class属性操作
+<ol type="1">
+<li>addClass():添加class属性值<br>
+</li>
+<li>removeClass():删除class属性值<br>
+</li>
+<li>toggleClass():切换class属性
+<ul>
+<li>toggleClass("one"):
+<ul>
+<li>判断如果元素对象上存在class="one"，则将属性值one删除掉。 如果元素对象上不存在class="one"，则添加<br>
+</li>
+</ul></li>
+</ul></li>
+<li>css():<br>
+</li>
+</ol></li>
+</ol></li>
+<li>CRUD操作:
+<ol type="1">
+<li>append():父元素将子元素追加到末尾
+<ul>
+<li>对象1.append(对象2): 将对象2添加到对象1元素内部，并且在末尾<br>
+</li>
+</ul></li>
+<li>prepend():父元素将子元素追加到开头
+<ul>
+<li>对象1.prepend(对象2):将对象2添加到对象1元素内部，并且在开头<br>
+</li>
+</ul></li>
+<li>appendTo():
+<ul>
+<li>对象1.appendTo(对象2):将对象1添加到对象2内部，并且在末尾<br>
+</li>
+</ul></li>
+<li>prependTo()：
+<ul>
+<li>对象1.prependTo(对象2):将对象1添加到对象2内部，并且在开头<br>
+</li>
+</ul></li>
+<li>after():添加元素到元素后边
+<ul>
+<li>对象1.after(对象2)： 将对象2添加到对象1后边。对象1和对象2是兄弟关系<br>
+</li>
+</ul></li>
+<li>before():添加元素到元素前边
+<ul>
+<li>对象1.before(对象2)： 将对象2添加到对象1前边。对象1和对象2是兄弟关系<br>
+</li>
+</ul></li>
+<li>insertAfter()
+<ul>
+<li>对象1.insertAfter(对象2)：将对象2添加到对象1后边。对象1和对象2是兄弟关系</li>
+</ul></li>
+<li>insertBefore()
+<ul>
+<li>对象1.insertBefore(对象2)： 将对象2添加到对象1前边。对象1和对象2是兄弟关系</li>
+</ul></li>
+<li>remove():移除元素
+<ul>
+<li>对象.remove():将对象删除掉<br>
+</li>
+</ul></li>
+<li>empty():清空元素的所有后代元素。
+<ul>
+<li>对象.empty():将对象的后代元素全部清空，但是保留当前对象以及其属性节点<br>
+</li>
+</ul></li>
+</ol></li>
+</ol></li>
+</ol></li>
+<li>遍历
+<ol type="1">
+<li>jq对象.each(callback)<br>
+</li>
+<li>$.each(object, [callback])<br>
+</li>
+<li>for..of: jquery 3.0 版本之后提供的方式 for(元素对象 of 容器对象)</li>
+</ol></li>
+</ol>
+<h2 id="ajax和json">AJAX和JSON</h2>
+<ol type="1">
+<li>JQeury实现方式
+<ol type="1">
+<li>$.ajax()<br>
+</li>
+<li>$.get()：发送get请求<br>
+</li>
+</ol>
+<ul>
+<li>语法：$.get(url, [data], [callback], [type])
+<ul>
+<li>参数：
+<ul>
+<li>url：请求路径<br>
+</li>
+<li>data：请求参数<br>
+</li>
+<li>callback：回调函数<br>
+</li>
+<li>type：响应结果的类型<br>
+</li>
+</ul></li>
+</ul></li>
+</ul>
+<ol start="3" type="1">
+<li><span class="math inline">\(.post()：发送post请求  * 语法：\)</span>.post(url, [data], [callback], [type])<br>
+</li>
+</ol></li>
+<li>JSON数据和Java对象的相互转换<br>
+2.1. JSON转为Java对象</li>
+</ol>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> 导入jackson的相关jar包</span><br><span class="line"><span class="bullet">2.</span> 创建Jackson核心对象 ObjectMapper</span><br><span class="line"><span class="bullet">3.</span> 调用ObjectMapper的相关方法进行转换</span><br><span class="line"> readValue(json字符串数据,Class)</span><br><span class="line"> <span class="code">```  </span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">    2.2 Java对象转换JSON  </span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">```  </span></span><br><span class="line"><span class="bullet">1.</span> 创建Jackson核心对象 ObjectMapper</span><br><span class="line"><span class="bullet">2.</span> 调用ObjectMapper的相关方法进行转换</span><br><span class="line"><span class="bullet">3.</span> 转换方法：</span><br><span class="line">writeValue(参数1，obj):  </span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javaweb/" rel="tag"># javaweb</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/09/JavaBase/" rel="prev" title="JavaBase">
+                  <i class="fa fa-chevron-left"></i> JavaBase
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/13/jupyter-notebook%E6%9B%B4%E6%8D%A2python%E6%A0%B8/" rel="next" title="jupyter notebook更换python核">
+                  jupyter notebook更换python核 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">solo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"sundael.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="数组遍历 第三大的数（414） 解法一 12345678910111213141516&#x2F;&#x2F; 比较不一样的数，要是相邻的不一样，diff+1，等到diff等于3就是这个第三大的数class Solution &amp;#123;    public int thirdMax(int[] nums) &amp;#123;                   Arrays.sort(nums);">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode之数组">
+<meta property="og:url" content="https://sundael.github.io/2021/12/06/leetcode%E4%B9%8B%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:site_name" content="sundael">
+<meta property="og:description" content="数组遍历 第三大的数（414） 解法一 12345678910111213141516&#x2F;&#x2F; 比较不一样的数，要是相邻的不一样，diff+1，等到diff等于3就是这个第三大的数class Solution &amp;#123;    public int thirdMax(int[] nums) &amp;#123;                   Arrays.sort(nums);">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-06T03:39:20.000Z">
+<meta property="article:modified_time" content="2021-12-10T06:22:53.590Z">
+<meta property="article:author" content="solo">
+<meta property="article:tag" content="数组">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://sundael.github.io/2021/12/06/leetcode%E4%B9%8B%E6%95%B0%E7%BB%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://sundael.github.io/2021/12/06/leetcode%E4%B9%8B%E6%95%B0%E7%BB%84/","path":"2021/12/06/leetcode之数组/","title":"leetcode之数组"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>leetcode之数组 | sundael</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">sundael</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E9%81%8D%E5%8E%86"><span class="nav-number">1.</span> <span class="nav-text">数组遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E5%A4%A7%E7%9A%84%E6%95%B0414"><span class="nav-number">1.1.</span> <span class="nav-text">第三大的数（414）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E4%B9%98%E7%A7%AF-628"><span class="nav-number">1.2.</span> <span class="nav-text">三个数的最大乘积 (628)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0"><span class="nav-number">2.</span> <span class="nav-text">统计数组中的元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E7%9A%84%E9%9B%86%E5%90%88645"><span class="nav-number">2.1.</span> <span class="nav-text">错误的集合（645）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%BA%A6697"><span class="nav-number">2.2.</span> <span class="nav-text">数组的度（697）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%BE%E5%88%B0%E6%89%80%E6%9C%89%E6%95%B0%E7%BB%84%E4%B8%AD%E6%B6%88%E5%A4%B1%E7%9A%84%E6%95%B0%E5%AD%97448"><span class="nav-number">2.3.</span> <span class="nav-text">找到所有数组中消失的数字（448）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E4%B8%AD%E9%87%8D%E5%A4%8D%E7%9A%84%E6%95%B0%E6%8D%AE442"><span class="nav-number">2.4.</span> <span class="nav-text">数组中重复的数据（442）*</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%94%B9%E5%8F%98%E7%A7%BB%E5%8A%A8"><span class="nav-number">3.</span> <span class="nav-text">数组的改变、移动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0%E4%BD%BF%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9B%B8%E7%AD%89453"><span class="nav-number">3.1.</span> <span class="nav-text">最小操作次数使数组元素相等（453）</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="solo"
+      src="/images/3.jpg">
+  <p class="site-author-name" itemprop="name">solo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/981450245@qq.com" title="E-Mail → 981450245@qq.com">E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sundael.github.io/2021/12/06/leetcode%E4%B9%8B%E6%95%B0%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/3.jpg">
+      <meta itemprop="name" content="solo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sundael">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          leetcode之数组
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-06 11:39:20" itemprop="dateCreated datePublished" datetime="2021-12-06T11:39:20+08:00">2021-12-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-10 14:22:53" itemprop="dateModified" datetime="2021-12-10T14:22:53+08:00">2021-12-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="数组遍历">数组遍历</h2>
+<h3 id="第三大的数414">第三大的数（414）</h3>
+<p>解法一 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 比较不一样的数，要是相邻的不一样，diff+1，等到diff等于3就是这个第三大的数</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">thirdMax</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;           </span><br><span class="line">        Arrays.sort(nums);             <span class="comment">//Arrays.sort的排序只有从小到大排序</span></span><br><span class="line">        <span class="keyword">int</span> diff=<span class="number">1</span>;                     </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=nums.length-<span class="number">1</span>;i&gt;<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[i]!=nums[i-<span class="number">1</span>])&#123;</span><br><span class="line">                ++diff;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (diff==<span class="number">3</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> nums[i-<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums[nums.length-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 解法2 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">thirdMax</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        TreeSet&lt;Integer&gt; s = <span class="keyword">new</span> TreeSet&lt;Integer&gt;();   <span class="comment">//也是有序集合，从小到大排列</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">            s.<span class="built_in">add</span>(num);                                <span class="comment">//把元素不断添加到这个集合中</span></span><br><span class="line">            <span class="keyword">if</span> (s.<span class="built_in">size</span>() &gt; <span class="number">3</span>) &#123;                        </span><br><span class="line">                s.<span class="built_in">remove</span>(s.<span class="built_in">first</span>());              </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s.<span class="built_in">size</span>() == <span class="number">3</span> ? s.<span class="built_in">first</span>() : s.<span class="built_in">last</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> <span id="more"></span></p>
+<h3 id="三个数的最大乘积-628">三个数的最大乘积 (628)</h3>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    public <span class="built_in">int</span> maximum<span class="constructor">Product(<span class="params">int</span>[] <span class="params">nums</span>)</span> &#123;</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span>sort(nums);</span><br><span class="line">        <span class="built_in">int</span> n=nums.length;</span><br><span class="line">        return <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>max(nums<span class="literal">[<span class="identifier">n</span>-<span class="number">1</span>]</span>*nums<span class="literal">[<span class="identifier">n</span>-<span class="number">2</span>]</span>*nums<span class="literal">[<span class="identifier">n</span>-<span class="number">3</span>]</span>,nums<span class="literal">[<span class="number">0</span>]</span>*nums<span class="literal">[<span class="number">1</span>]</span>*nums<span class="literal">[<span class="identifier">n</span>-<span class="number">1</span>]</span>);  \\全是正数，全是负数，两正一负，两负一正分类讨论</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="统计数组中的元素">统计数组中的元素</h2>
+<h3 id="错误的集合645">错误的集合（645）</h3>
+<p>思路：先进行排序，相邻的数字如果是重复的，则作差等于0，这就找到了重复的数字；<br>
+   若差值等于2，说明丢失的数字是前一个加1。<br>
+   还有一种情况就是找不到差值为2的，也就是丢失的数字是n或1；就得判断首尾</p>
+<h3 id="数组的度697">数组的度（697）</h3>
+<p>思路：利用hashmap，键是出现的值，值是一个数组，第一个元素记录出现的次数，第二个元素记录第一个出现的位置，第二个元素记录最后一个出现的位置<br>
+   遍历这个hashmap，找出重复出现最多元素的最小的长度</p>
+<h3 id="找到所有数组中消失的数字448">找到所有数组中消失的数字（448）</h3>
+<p>思路：由于出现的值也是0-n的，所以可以新建另一个数组，记录每个元素出现的次数    遍历原来的数组，如果出现一个，那另一个数组所在下标的值也+1    遍历新的数组，如果值等于0，就是没出现过</p>
+<h3 id="数组中重复的数据442">数组中重复的数据（442）*</h3>
+<p>思路1：暴力求解<br>
+   先排序再进行遍历，如果前后差值为0的就是重复的<br>
+思路2：巧妙利用数组里的数字也是1-n的    那么他原来应该在的下标，那里的数字加上一个常数，遍历这个数组，如果大于2*n的就是出现了两次的。</p>
+<h2 id="数组的改变移动">数组的改变、移动</h2>
+<h3 id="最小操作次数使数组元素相等453">最小操作次数使数组元素相等（453）</h3>
+<p>思路：n-1个元素加1等效于l个元素减1</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E7%BB%84/" rel="tag"># 数组</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/16/ubuntu%E4%B8%8B%E9%9D%9Eroot%E7%9B%AE%E5%BD%95%E4%B8%8B%E9%85%8D%E7%BD%AEpython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" rel="prev" title="ubuntu下非root目录下配置python虚拟环境">
+                  <i class="fa fa-chevron-left"></i> ubuntu下非root目录下配置python虚拟环境
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/20/%E5%89%91%E6%8C%87offer/" rel="next" title="剑指offer">
+                  剑指offer <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">solo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
