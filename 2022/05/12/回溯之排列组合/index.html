@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"sundael.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="子集 78. 子集 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。 12输入：nums &#x3D; [1,2,3]输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] 12345678910111213141516171819class Solution &amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回溯之排列组合">
+<meta property="og:url" content="https://sundael.github.io/2022/05/12/%E5%9B%9E%E6%BA%AF%E4%B9%8B%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88/index.html">
+<meta property="og:site_name" content="sundael">
+<meta property="og:description" content="子集 78. 子集 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。 12输入：nums &#x3D; [1,2,3]输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] 12345678910111213141516171819class Solution &amp;#1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-12T02:34:49.000Z">
+<meta property="article:modified_time" content="2022-05-12T12:24:18.478Z">
+<meta property="article:author" content="solo">
+<meta property="article:tag" content="数组">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://sundael.github.io/2022/05/12/%E5%9B%9E%E6%BA%AF%E4%B9%8B%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://sundael.github.io/2022/05/12/%E5%9B%9E%E6%BA%AF%E4%B9%8B%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88/","path":"2022/05/12/回溯之排列组合/","title":"回溯之排列组合"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>回溯之排列组合 | sundael</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">sundael</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">子集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%90%E9%9B%86-1"><span class="nav-number">1.0.1.</span> <span class="nav-text">78. 子集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%90%E9%9B%86-ii"><span class="nav-number">1.0.2.</span> <span class="nav-text">90. 子集 II</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">组合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E5%90%88-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">77. 组合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C-ii"><span class="nav-number">2.0.2.</span> <span class="nav-text">40. 组合总和 II</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C-iii"><span class="nav-number">2.0.3.</span> <span class="nav-text">216. 组合总和 III</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%88%97"><span class="nav-number">3.</span> <span class="nav-text">排列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E6%8E%92%E5%88%97"><span class="nav-number">3.0.1.</span> <span class="nav-text">46. 全排列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E6%8E%92%E5%88%97-ii"><span class="nav-number">3.0.2.</span> <span class="nav-text">47. 全排列 II</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="solo"
+      src="/images/3.jpg">
+  <p class="site-author-name" itemprop="name">solo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/981450245@qq.com" title="E-Mail → 981450245@qq.com">E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sundael.github.io/2022/05/12/%E5%9B%9E%E6%BA%AF%E4%B9%8B%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/3.jpg">
+      <meta itemprop="name" content="solo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sundael">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          回溯之排列组合
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-12 10:34:49 / 修改时间：20:24:18" itemprop="dateCreated datePublished" datetime="2022-05-12T10:34:49+08:00">2022-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="子集">子集</h2>
+<h4 id="子集-1"><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/subsets/">78. 子集</a></h4>
+<p>给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = <span class="comment">[1,2,3]</span></span><br><span class="line">输出：<span class="comment">[<span class="comment">[]</span>,<span class="comment">[1]</span>,<span class="comment">[2]</span>,<span class="comment">[1,2]</span>,<span class="comment">[3]</span>,<span class="comment">[1,3]</span>,<span class="comment">[2,3]</span>,<span class="comment">[1,2,3]</span>]</span></span><br></pre></td></tr></table></figure> <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;<span class="type">Integer</span>&gt; tmp=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; subsets(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">        backtrack(<span class="number">0</span>,nums);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> backtrack(<span class="type">int</span> <span class="keyword">index</span>,<span class="type">int</span>[] nums)&#123;</span><br><span class="line">        res.<span class="keyword">add</span>(<span class="built_in">new</span> ArrayList&lt;&gt;(tmp));</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">index</span>==nums.length) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="keyword">index</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            tmp.<span class="keyword">add</span>(nums[i]);</span><br><span class="line">            backtrack(i+<span class="number">1</span>,nums);</span><br><span class="line">            tmp.remove(tmp.size()<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> Tips:首先不含重复元素，就不需要判重，直接到Index后面的值循环即可。</p>
+<span id="more"></span>
+<h4 id="子集-ii"><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/subsets-ii/">90. 子集 II</a></h4>
+<p>给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。 解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = <span class="comment">[1,2,2]</span></span><br><span class="line">输出：<span class="comment">[<span class="comment">[]</span>,<span class="comment">[1]</span>,<span class="comment">[1,2]</span>,<span class="comment">[1,2,2]</span>,<span class="comment">[2]</span>,<span class="comment">[2,2]</span>]</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;<span class="type">Integer</span>&gt; <span class="type">path</span>=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; subsetsWithDup(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        backtrack(<span class="number">0</span>,nums);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> backtrack(<span class="type">int</span> <span class="keyword">index</span>,<span class="type">int</span>[] nums)&#123;</span><br><span class="line">        res.<span class="keyword">add</span>(<span class="built_in">new</span> ArrayList&lt;&gt;(<span class="type">path</span>));</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="keyword">index</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (i&gt;<span class="keyword">index</span>&amp;&amp;nums[i]==nums[i<span class="number">-1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="type">path</span>.<span class="keyword">add</span>(nums[i]);</span><br><span class="line">            backtrack(i+<span class="number">1</span>,nums);</span><br><span class="line">            <span class="type">path</span>.remove(<span class="type">path</span>.size()<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Tips: 有重复元素，就要先排序再剪枝。</p>
+<p>总结：子集问题基本框架都是先确定index，从这个index往后查找。base case可以不用return,因为到最后一个元素时，就不进入for循环了。<br>
+要是有重复元素，就要先排序再剪枝。</p>
+<h2 id="组合">组合</h2>
+<h4 id="组合-1"><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combinations/">77. 组合</a></h4>
+<p>给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。 你可以按 任何顺序 返回答案。 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入：n = 4, k = 2</span><br><span class="line">输出：</span><br><span class="line"><span class="comment">[</span></span><br><span class="line"><span class="comment">  <span class="comment">[2,4]</span>,</span></span><br><span class="line"><span class="comment">  <span class="comment">[3,4]</span>,</span></span><br><span class="line"><span class="comment">  <span class="comment">[2,3]</span>,</span></span><br><span class="line"><span class="comment">  <span class="comment">[1,2]</span>,</span></span><br><span class="line"><span class="comment">  <span class="comment">[1,3]</span>,</span></span><br><span class="line"><span class="comment">  <span class="comment">[1,4]</span>,</span></span><br><span class="line"><span class="comment">]</span></span><br></pre></td></tr></table></figure> <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;<span class="type">Integer</span>&gt; <span class="type">path</span>=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; combine(<span class="type">int</span> n, <span class="type">int</span> k) &#123;</span><br><span class="line">        backtrack(<span class="number">1</span>,n,k);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> backtrack(<span class="type">int</span> <span class="keyword">index</span>,<span class="type">int</span> n,<span class="type">int</span> k)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="type">path</span>.size()==k) res.<span class="keyword">add</span>(<span class="built_in">new</span> ArrayList&lt;&gt;(<span class="type">path</span>));</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="keyword">index</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="type">path</span>.<span class="keyword">add</span>(i);</span><br><span class="line">            backtrack(i+<span class="number">1</span>,n,k);</span><br><span class="line">            <span class="type">path</span>.remove(<span class="type">path</span>.size()<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> Tips：组合问题本质上和子集一样，就是base case不一样。没有重复元素直接到index后面去找。 #### <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combination-sum/">39. 组合总和</a> 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。 candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。  对于给定的输入，保证和为 target 的不同组合数少于 150 个。 <figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：candidates = [2,3,6,7], target = 7</span><br><span class="line">输出：[[2,2,3],[7]]</span><br><span class="line">解释：</span><br><span class="line">2 和<span class="number"> 3 </span>可以形成一组候选，2 +<span class="number"> 2 </span>+<span class="number"> 3 </span>=<span class="number"> 7 </span>。注意<span class="number"> 2 </span>可以使用多次。</span><br><span class="line">7 也是一个候选，<span class="number"> 7 </span>=<span class="number"> 7 </span>。</span><br><span class="line">仅有这两种组合。</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;<span class="type">Integer</span>&gt; <span class="type">path</span>=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; combinationSum(<span class="type">int</span>[] candidates, <span class="type">int</span> target) &#123;</span><br><span class="line">        backtrack(candidates,target,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> backtrack(<span class="type">int</span>[] candidates,<span class="type">int</span> target,<span class="type">int</span> <span class="keyword">index</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> (target==<span class="number">0</span>) &#123;</span><br><span class="line">            res.<span class="keyword">add</span>(<span class="built_in">new</span> ArrayList&lt;&gt;(<span class="type">path</span>));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (target&lt;<span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="keyword">index</span>;i&lt;candidates.length;i++)&#123;</span><br><span class="line">            <span class="type">path</span>.<span class="keyword">add</span>(candidates[i]);</span><br><span class="line">            backtrack(candidates,target-candidates[i],i);</span><br><span class="line">            <span class="type">path</span>.remove(<span class="type">path</span>.size()<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Tips:无重复元素基本不需要去判重，本身可以取无穷次，就不需要到Index后去找。</p>
+<h4 id="组合总和-ii"><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combination-sum-ii/submissions/">40. 组合总和 II</a></h4>
+<p>给定一个候选人编号的集合 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。 candidates 中的每个数字在每个组合中只能使用 一次 。 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入: candidates = <span class="comment">[10,1,2,7,6,1,5]</span>, target = 8,</span><br><span class="line">输出:</span><br><span class="line"><span class="comment">[</span></span><br><span class="line"><span class="comment"><span class="comment">[1,1,6]</span>,</span></span><br><span class="line"><span class="comment"><span class="comment">[1,2,5]</span>,</span></span><br><span class="line"><span class="comment"><span class="comment">[1,7]</span>,</span></span><br><span class="line"><span class="comment"><span class="comment">[2,6]</span></span></span><br><span class="line"><span class="comment">]</span></span><br></pre></td></tr></table></figure> <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;<span class="type">Integer</span>&gt; <span class="type">path</span>=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; combinationSum2(<span class="type">int</span>[] candidates, <span class="type">int</span> target) &#123;</span><br><span class="line">        Arrays.sort(candidates);</span><br><span class="line">        backtrack(candidates,target,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> backtrack(<span class="type">int</span>[] candidates, <span class="type">int</span> target,<span class="type">int</span> <span class="keyword">index</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> (target==<span class="number">0</span>) res.<span class="keyword">add</span>(<span class="built_in">new</span> ArrayList&lt;&gt;(<span class="type">path</span>));</span><br><span class="line">        <span class="keyword">if</span> (target&lt;<span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="keyword">index</span>;i&lt;candidates.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (i&gt;<span class="keyword">index</span>&amp;&amp;candidates[i]==candidates[i<span class="number">-1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="type">path</span>.<span class="keyword">add</span>(candidates[i]);</span><br><span class="line">            backtrack(candidates,target-candidates[i],i+<span class="number">1</span>);</span><br><span class="line">            <span class="type">path</span>.remove(<span class="type">path</span>.size()<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> Tips:含有重复元素要先进行排序再剪枝，只能使用一次就去后面一位找</p>
+<h4 id="组合总和-iii"><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combination-sum-iii/">216. 组合总和 III</a></h4>
+<p>找出所有相加之和为 n 的 k 个数的组合，且满足下列条件： 只使用数字1到9 每个数字 最多使用一次  返回 所有可能的有效组合的列表 。该列表不能包含相同的组合两次，组合可以以任何顺序返回。 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: k = <span class="number">3</span>, n = <span class="number">7</span></span><br><span class="line">输出: <span class="string">[[1,2,4]]</span></span><br><span class="line">解释:</span><br><span class="line"><span class="number">1</span> + <span class="number">2</span> + <span class="number">4</span> = <span class="number">7</span></span><br><span class="line">没有其他符合的组合了。</span><br></pre></td></tr></table></figure> <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;<span class="type">Integer</span>&gt; <span class="type">path</span>=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; combinationSum3(<span class="type">int</span> k, <span class="type">int</span> n) &#123;</span><br><span class="line">        backtrack(<span class="number">1</span>,k,n);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> backtrack(<span class="type">int</span> <span class="keyword">index</span>,<span class="type">int</span> k,<span class="type">int</span> n)&#123;</span><br><span class="line">        <span class="keyword">if</span> (n&lt;<span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (n==<span class="number">0</span>&amp;&amp;<span class="type">path</span>.size()==k) &#123;</span><br><span class="line">            res.<span class="keyword">add</span>(<span class="built_in">new</span> ArrayList&lt;&gt;(<span class="type">path</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="keyword">index</span>;i&lt;=<span class="number">9</span>;i++)&#123;</span><br><span class="line">            <span class="type">path</span>.<span class="keyword">add</span>(i);</span><br><span class="line">            backtrack(i+<span class="number">1</span>,k,n-i);</span><br><span class="line">            <span class="type">path</span>.remove(<span class="type">path</span>.size()<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="排列">排列</h2>
+<h4 id="全排列"><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/permutations/">46. 全排列</a></h4>
+<p>给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = <span class="comment">[1,2,3]</span></span><br><span class="line">输出：<span class="comment">[<span class="comment">[1,2,3]</span>,<span class="comment">[1,3,2]</span>,<span class="comment">[2,1,3]</span>,<span class="comment">[2,3,1]</span>,<span class="comment">[3,1,2]</span>,<span class="comment">[3,2,1]</span>]</span></span><br></pre></td></tr></table></figure> <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;<span class="type">Integer</span>&gt; tmp=<span class="built_in">new</span> LinkedList&lt;&gt;();</span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; permute(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">        backtrack(nums,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> backtrack(<span class="type">int</span>[] nums,<span class="type">int</span> <span class="keyword">index</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> (tmp.size()==nums.length) res.<span class="keyword">add</span>(<span class="built_in">new</span> LinkedList&lt;&gt;(tmp));</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (tmp.contains(nums[i])) <span class="keyword">continue</span>;</span><br><span class="line">            tmp.<span class="keyword">add</span>(nums[i]);</span><br><span class="line">            backtrack(nums,i+<span class="number">1</span>);</span><br><span class="line">            tmp.remove(tmp.size()<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure> Tips:排列问题都要从index=0开始，要有一个visted数组来判定是否访问过。</p>
+<h4 id="全排列-ii"><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/permutations/">47. 全排列 II</a></h4>
+<p>给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = <span class="comment">[1,1,2]</span></span><br><span class="line">输出：</span><br><span class="line"><span class="comment">[<span class="comment">[1,1,2]</span>,</span></span><br><span class="line"><span class="comment"> <span class="comment">[1,2,1]</span>,</span></span><br><span class="line"><span class="comment"> <span class="comment">[2,1,1]</span>]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line">    List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; res=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;<span class="type">Integer</span>&gt; <span class="type">path</span>=<span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="built_in">public</span> List&lt;List&lt;<span class="type">Integer</span>&gt;&gt; permuteUnique(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">        <span class="type">boolean</span>[] visited=<span class="built_in">new</span> <span class="type">boolean</span>[nums.length];</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        backtrack(nums,visited);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> backtrack(<span class="type">int</span>[] nums,<span class="type">boolean</span>[] visited)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="type">path</span>.size()==nums.length)&#123;</span><br><span class="line">            res.<span class="keyword">add</span>(<span class="built_in">new</span> ArrayList&lt;&gt;(<span class="type">path</span>));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (visited[i]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span> (i&gt;<span class="number">0</span>&amp;&amp;nums[i]==nums[i<span class="number">-1</span>]&amp;&amp;!visited[i<span class="number">-1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="type">path</span>.<span class="keyword">add</span>(nums[i]);</span><br><span class="line">            visited[i]=<span class="keyword">true</span>;</span><br><span class="line">            backtrack(nums,visited);</span><br><span class="line">            <span class="type">path</span>.remove(<span class="type">path</span>.size()<span class="number">-1</span>);</span><br><span class="line">            visited[i]=<span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Tips:含重复元素但不能有重复排列问题都要剪枝。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E7%BB%84/" rel="tag"># 数组</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/09/%E7%A7%92%E6%9D%80%E8%BF%9B%E9%98%B6/" rel="prev" title="秒杀进阶">
+                  <i class="fa fa-chevron-left"></i> 秒杀进阶
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B9%8B%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" rel="next" title="二叉树之最近公共祖先">
+                  二叉树之最近公共祖先 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">solo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
