@@ -20,18 +20,21 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"sundael.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Scrapy是:由Python语言开发的一个快速、高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据，只需要实现少量的代码，就能够快速的抓取。">
+<meta name="description" content="算是一个小小的入门吧！ 概述 Scrapy是:由Python语言开发的一个快速、高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据，只需要实现少量的代码，就能够快速的抓取。 Scrapy吸引人的地方在于它是一个框架，任何人都可以根据需求方便的修改。它也提供了多种类型爬虫的基类，如BaseSpider、sitemap爬虫等，最新版本又提供了web2.0爬虫的支持.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="scrapy学习">
 <meta property="og:url" content="https://sundael.github.io/2022/05/13/scrapy%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="sundael">
-<meta property="og:description" content="Scrapy是:由Python语言开发的一个快速、高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据，只需要实现少量的代码，就能够快速的抓取。">
+<meta property="og:description" content="算是一个小小的入门吧！ 概述 Scrapy是:由Python语言开发的一个快速、高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据，只需要实现少量的代码，就能够快速的抓取。 Scrapy吸引人的地方在于它是一个框架，任何人都可以根据需求方便的修改。它也提供了多种类型爬虫的基类，如BaseSpider、sitemap爬虫等，最新版本又提供了web2.0爬虫的支持.">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sundael.github.io/2022/05/13/scrapy%E5%AD%A6%E4%B9%A0/1.png">
+<meta property="og:image" content="https://sundael.github.io/2022/05/13/scrapy%E5%AD%A6%E4%B9%A0/2.png">
 <meta property="article:published_time" content="2022-05-13T06:03:01.000Z">
-<meta property="article:modified_time" content="2022-05-13T06:22:51.004Z">
+<meta property="article:modified_time" content="2022-05-13T08:19:29.115Z">
 <meta property="article:author" content="solo">
 <meta property="article:tag" content="爬虫">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sundael.github.io/2022/05/13/scrapy%E5%AD%A6%E4%B9%A0/1.png">
 
 
 <link rel="canonical" href="https://sundael.github.io/2022/05/13/scrapy%E5%AD%A6%E4%B9%A0/">
@@ -105,7 +108,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -118,6 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scrapy%E4%BA%94%E5%A4%A7%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">Scrapy五大基本构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">3.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.1.</span> <span class="nav-text">新建项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%8E%E7%A1%AE%E7%9B%AE%E6%A0%87"><span class="nav-number">3.2.</span> <span class="nav-text">明确目标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E5%88%B0sql"><span class="nav-number">3.3.</span> <span class="nav-text">保存数据到sql</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -212,7 +216,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-05-13 14:03:01 / 修改时间：14:22:51" itemprop="dateCreated datePublished" datetime="2022-05-13T14:03:01+08:00">2022-05-13</time>
+      <time title="创建时间：2022-05-13 14:03:01 / 修改时间：16:19:29" itemprop="dateCreated datePublished" datetime="2022-05-13T14:03:01+08:00">2022-05-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -234,7 +238,39 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Scrapy是:由Python语言开发的一个快速、高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据，只需要实现少量的代码，就能够快速的抓取。</p>
+        <p>算是一个小小的入门吧！</p>
+<h3 id="概述">概述</h3>
+<p>Scrapy是:由Python语言开发的一个快速、高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据，只需要实现少量的代码，就能够快速的抓取。</p>
+<p>Scrapy吸引人的地方在于它是一个框架，任何人都可以根据需求方便的修改。它也提供了多种类型爬虫的基类，如BaseSpider、sitemap爬虫等，最新版本又提供了web2.0爬虫的支持.</p>
+<span id="more"></span>
+<h3 id="scrapy五大基本构成">Scrapy五大基本构成</h3>
+<p>Scrapy框架主要由五大组件组成，它们分别是调度器(Scheduler)、下载器(Downloader)、爬虫（Spider）和实体管道(Item Pipeline)、Scrapy引擎(Scrapy Engine)。下面我们分别介绍各个组件的作用。<br>
+<img width="800" height="470" src="/2022/05/13/scrapy%E5%AD%A6%E4%B9%A0/1.png"> (1)、调度器(Scheduler): 调度器，说白了把它假设成为一个URL（抓取网页的网址或者说是链接）的<strong>优先队列</strong>，由它来决定下一个要抓取的网址是 什么，同时去除重复的网址（不做无用功）。用户可以自己的需求定制调度器。</p>
+<p>(2)、下载器(Downloader): 下载器，是所有组件中负担最大的，它用于高速地下载网络上的资源。Scrapy的下载器代码不会太复杂，但效率高，主要的原因是Scrapy下载器是建立在twisted这个高效的异步模型上的(其实整个框架都在建立在这个模型上的)。</p>
+<p>(3)、 爬虫（Spider）: 爬虫，是用户最关心的部份。用户定制自己的爬虫(通过<strong>定制正则表达式等语法</strong>)，用于从特定的网页中<strong>提取自己需要的信息</strong>，即所谓的实体(Item)。 用户也可以从中提取出链接,让Scrapy继续抓取下一个页面。</p>
+<p>(4)、 实体管道(Item Pipeline): 实体管道，<strong>用于处理爬虫(spider)提取的实体</strong>。主要的功能是持久化实体、验证实体的有效性、清除不需要的信息。</p>
+<p>(5)、Scrapy引擎(Scrapy Engine): Scrapy引擎是整个框架的核心.它用来控制调试器、下载器、爬虫。实际上，引擎相当于计算机的CPU,它控制着整个流程。</p>
+<p><img width="800" height="470" src="/2022/05/13/scrapy%E5%AD%A6%E4%B9%A0/2.png"></p>
+<h3 id="实战">实战</h3>
+<h4 id="新建项目">新建项目</h4>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">scrapy startproject douban</span>  </span><br></pre></td></tr></table></figure>
+<p>得到五个初始化py文件。<br>
+items.py:定义item数据结构<br>
+settings.py:定义项目全局设置（robots协议，并发量，下载延迟-0.5s，是否开启cookie，请求头，中间件，扩展）<br>
+piplines.py:<br>
+spider文件：编写xpath和正则表达式<br>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span>在spider文件中创建</span><br><span class="line">scrapy genspider movie.douban</span><br></pre></td></tr></table></figure> 生成爬虫文件douban_spider.py <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubanSpiderSpider</span>(<span class="params">scrapy.Spider</span>):</span></span><br><span class="line">    name = <span class="string">&#x27;douban_spider&#x27;</span></span><br><span class="line">    allowed_domains =[<span class="string">&#x27;movie.douban.com&#x27;</span>]</span><br><span class="line">    start_urls=[<span class="string">&#x27;http://movie.douban.com/&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span>(<span class="params">self,response</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="明确目标">明确目标</h4>
+<p>以豆瓣电影top250为例 在items.py中定义数据结构<br>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import scrapy</span><br><span class="line"><span class="keyword">class</span> <span class="constructor">Job51SpiderItem(<span class="params">scrapy</span>.Item)</span>:</span><br><span class="line">    serial_number = scrapy.<span class="constructor">Field()</span>  <span class="comment">//序号</span></span><br><span class="line">    movie_name = scrapy.<span class="constructor">Field()</span>        <span class="comment">//电影名称</span></span><br><span class="line">    introduce = scrapy.<span class="constructor">Field()</span>         <span class="comment">//介绍</span></span><br><span class="line">    star = scrapy.<span class="constructor">Field()</span></span><br><span class="line">    evaluate = scrapy.<span class="constructor">Field()</span></span><br><span class="line">    describe = scrapy.<span class="constructor">Field()</span></span><br></pre></td></tr></table></figure></p>
+<p>spider文件编写<br>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class DoubanSpiderSpider(scrapy.Spider):</span><br><span class="line">    name = <span class="string">&#x27;douban_spider&#x27;</span>   <span class="regexp">//</span>爬虫名字</span><br><span class="line">    allowed_domains =[<span class="string">&#x27;movie.douban.com&#x27;</span>]                <span class="regexp">//</span>允许的域名</span><br><span class="line">    start_urls=[<span class="string">&#x27;http://movie.douban.com/top250&#x27;</span>]               <span class="regexp">//</span>入口URL，引擎会把这个url放到调度器中</span><br></pre></td></tr></table></figure> scrapy crawl douban_spider 输出爬虫信息和解析的文件</p>
+<p>xpath编写解析文件<br>
+定位到提取信息上面的div 再进行细分<br>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def parse(self,response):                 <span class="comment">//进行解析</span></span><br><span class="line">    movie_list=response.xpath(<span class="string">&quot;//div[@class=&#x27;article&#x27;]//ol[@class=&#x27;grid_view&#x27;]/li&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将数据yield到piplines中</span></span><br><span class="line">    yield douban_item</span><br><span class="line"></span><br><span class="line">    next_link=reponse.xpath(<span class="string">&quot;//span[@class=&#x27;next&#x27;]/link/@href&quot;</span>).extract<span class="literal">()</span></span><br><span class="line">    <span class="keyword">if</span> next_link:</span><br><span class="line">        next_link=next_link<span class="literal">[<span class="number">0</span>]</span></span><br><span class="line">        yield scrapy.<span class="constructor">Request(<span class="string">&quot;https://movie.douban.com/top250&quot;</span>+<span class="params">next_link</span>,<span class="params">call_back</span>=<span class="params">self</span>.<span class="params">parse</span>()</span>)</span><br></pre></td></tr></table></figure> #### 数据存储 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy crawl douban_spider -o <span class="keyword">test</span>.csv</span><br></pre></td></tr></table></figure></p>
+<h4 id="保存数据到sql">保存数据到sql</h4>
+<p>setting.py <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mango_host</span>=<span class="string">&#x27;192.168.186.129&#x27;</span> </span><br><span class="line"><span class="attr">mango_port</span>=<span class="number">27017</span></span><br><span class="line"><span class="attr">mango_db_name</span>=<span class="string">&#x27;douban&#x27;</span></span><br><span class="line"><span class="attr">mango_db_collection</span>=<span class="string">&#x27;douban_movies&#x27;</span></span><br></pre></td></tr></table></figure> piplines.py</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(<span class="keyword">self</span>,item,spider)</span></span>:</span><br><span class="line">    data=dict(item)</span><br><span class="line">    <span class="keyword">self</span>.post.insert(data)</span><br><span class="line">    <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
 
     </div>
 
