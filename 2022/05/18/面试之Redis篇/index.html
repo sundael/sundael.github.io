@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"sundael.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="多路I&#x2F;O复用模型 FD：file descriptor，文件描述符 打开文件的元数据到文件本身的映射 select:监听文件是否可读可写，程序继续去做别的事情不被阻塞 Redis采用的IO多路复用函数：epoll、kqueue、evport 采用react设计模式监听I&#x2F;O事件 ##### Redis的数据类型 hash：string元素组成的字典，适合存储对象 list：按照s">
+<meta name="description" content="多路I&#x2F;O复用模型 FD：file descriptor，文件描述符 打开文件的元数据到文件本身的映射 select:监听文件是否可读可写，程序继续去做别的事情不被阻塞 Redis采用的IO多路复用函数：epoll、kqueue、evport 采用react设计模式监听I&#x2F;O事件 Redis的数据类型 hash：string元素组成的字典，适合存储对象 list：按照string元">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试之Redis篇">
 <meta property="og:url" content="https://sundael.github.io/2022/05/18/%E9%9D%A2%E8%AF%95%E4%B9%8BRedis%E7%AF%87/index.html">
 <meta property="og:site_name" content="sundael">
-<meta property="og:description" content="多路I&#x2F;O复用模型 FD：file descriptor，文件描述符 打开文件的元数据到文件本身的映射 select:监听文件是否可读可写，程序继续去做别的事情不被阻塞 Redis采用的IO多路复用函数：epoll、kqueue、evport 采用react设计模式监听I&#x2F;O事件 ##### Redis的数据类型 hash：string元素组成的字典，适合存储对象 list：按照s">
+<meta property="og:description" content="多路I&#x2F;O复用模型 FD：file descriptor，文件描述符 打开文件的元数据到文件本身的映射 select:监听文件是否可读可写，程序继续去做别的事情不被阻塞 Redis采用的IO多路复用函数：epoll、kqueue、evport 采用react设计模式监听I&#x2F;O事件 Redis的数据类型 hash：string元素组成的字典，适合存储对象 list：按照string元">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-18T03:14:48.000Z">
-<meta property="article:modified_time" content="2022-05-18T07:35:10.906Z">
+<meta property="article:modified_time" content="2022-05-18T11:38:59.444Z">
 <meta property="article:author" content="solo">
 <meta property="article:tag" content="中间件">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E8%B7%AFio%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">多路I&#x2F;O复用模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">2.</span> <span class="nav-text">如何实现分布式锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E9%98%9F%E5%88%97"><span class="nav-number">3.</span> <span class="nav-text">实现异步队列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">持久化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pipeline%E5%8F%8A%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5"><span class="nav-number">5.</span> <span class="nav-text">pipeline及主从同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#redis%E9%9B%86%E7%BE%A4"><span class="nav-number">6.</span> <span class="nav-text">Redis集群</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E8%B7%AFio%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">多路I&#x2F;O复用模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#redis%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">Redis的数据类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%8E%E6%B5%B7%E9%87%8Fkey%E9%87%8C%E6%9F%A5%E8%AF%A2%E5%87%BA%E6%9F%90%E4%B8%80%E5%9B%BA%E5%AE%9A%E5%89%8D%E7%BC%80%E7%9A%84key"><span class="nav-number">3.</span> <span class="nav-text">从海量key里查询出某一固定前缀的key</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">4.</span> <span class="nav-text">如何实现分布式锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E9%98%9F%E5%88%97"><span class="nav-number">5.</span> <span class="nav-text">实现异步队列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">6.</span> <span class="nav-text">持久化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pipeline%E5%8F%8A%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5"><span class="nav-number">7.</span> <span class="nav-text">pipeline及主从同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#redis%E9%9B%86%E7%BE%A4"><span class="nav-number">8.</span> <span class="nav-text">Redis集群</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -213,7 +213,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-05-18 11:14:48 / 修改时间：15:35:10" itemprop="dateCreated datePublished" datetime="2022-05-18T11:14:48+08:00">2022-05-18</time>
+      <time title="创建时间：2022-05-18 11:14:48 / 修改时间：19:38:59" itemprop="dateCreated datePublished" datetime="2022-05-18T11:14:48+08:00">2022-05-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -240,19 +240,21 @@
 打开文件的元数据到文件本身的映射<br>
 select:监听文件是否可读可写，程序继续去做别的事情不被阻塞<br>
 Redis采用的IO多路复用函数：epoll、kqueue、evport<br>
-采用react设计模式监听I/O事件<br>
-##### Redis的数据类型<br>
-hash：string元素组成的字典，适合存储对象<br>
+采用react设计模式监听I/O事件</p>
+<h5 id="redis的数据类型">Redis的数据类型</h5>
+<p>hash：string元素组成的字典，适合存储对象<br>
 list：按照string元素插入顺序排序<br>
 set：string元素的无序集合<br>
-sorted set： 通过分数来为集合排序<br>
-##### 从海量key里查询出某一固定前缀的key<br>
-scan:基于游标的迭代器，需要基于上一次的游标延续之前的迭代过程。<br>
+sorted set： 通过分数来为集合排序</p>
+<h5 id="从海量key里查询出某一固定前缀的key">从海量key里查询出某一固定前缀的key</h5>
+<p>scan:基于游标的迭代器，需要基于上一次的游标延续之前的迭代过程。<br>
 <span id="more"></span></p>
 <h5 id="如何实现分布式锁">如何实现分布式锁</h5>
 <ul>
-<li>互斥性：任一时刻只能有一个客户端获得锁</li>
-<li>安全性：锁只能由持有锁的客户端删除，不能由其他客户端删除</li>
+<li>互斥性：任一时刻只能有一个客户端获得锁<br>
+</li>
+<li>安全性：锁只能由持有锁的客户端删除，不能由其他客户端删除<br>
+</li>
 <li>死锁：获取锁的客户端宕机，其他节点再也无法获得锁<br>
 </li>
 <li>容错：Redis宕机客户端依然能获得锁<br>
@@ -267,21 +269,37 @@ expire key time: 设置key的过期时间，当key过期时，会被自动删除
 Redis.conf：save 900 1--900s有一次产生快照就进行备份<br>
 bgsave:fork一个子进程来创建RDB文件，不阻塞服务器进程<br>
 缺点：内存数据的全量同步，数据量大会由于IO而严重影响性能<br>
-<strong>AOF</strong>（append-only-file）：保存写状态<br>
-* 记录下除了查询以外的所有变更数据库状态的指令<br>
-* 以append形式追加保存到AOF文件中<br>
+<strong>AOF</strong>（append-only-file）：保存写状态</p>
+<ul>
+<li>记录下除了查询以外的所有变更数据库状态的指令<br>
+</li>
+<li>以append形式追加保存到AOF文件中<br>
 appendfsync everysec<br>
-日志重写解决AOF文件大小不断增大的问题： 调用fork()，创建子进程，子进程把新的AOF写到一个临时文件，不依赖原来的AOF文件。</p>
+日志重写解决AOF文件大小不断增大的问题： 调用fork()，创建子进程，子进程把新的AOF写到一个临时文件，不依赖原来的AOF文件。</li>
+</ul>
 <h5 id="pipeline及主从同步">pipeline及主从同步</h5>
 <p>主从同步原理： 不需要实时保证一致性<br>
-全同步过程： * slave发送sync命令到master<br>
-* master启动后台进程，将Redis的数据快照保存到文件中<br>
-* master将保存快照期间收到的写命令缓存起来<br>
-* master完成写操作后，将该文件发送给slave<br>
-* 使用新的AOF文件替换掉旧的AOF文件 * master将这期间收集的增量写命令发送给slave端</p>
-<p>增量同步过程： * master接收到用户的操作指南，判断是否需要传播到slave<br>
-* 将操作记录追加到AOF<br>
-* 将操作传播到其他slave</p>
+全同步过程：</p>
+<ul>
+<li>slave发送sync命令到master<br>
+</li>
+<li>master启动后台进程，将Redis的数据快照保存到文件中<br>
+</li>
+<li>master将保存快照期间收到的写命令缓存起来<br>
+</li>
+<li>master完成写操作后，将该文件发送给slave<br>
+</li>
+<li>使用新的AOF文件替换掉旧的AOF文件</li>
+<li>master将这期间收集的增量写命令发送给slave端</li>
+</ul>
+<p>增量同步过程：</p>
+<ul>
+<li>master接收到用户的操作指南，判断是否需要传播到slave<br>
+</li>
+<li>将操作记录追加到AOF<br>
+</li>
+<li>将操作传播到其他slave</li>
+</ul>
 <h5 id="redis集群">Redis集群</h5>
 <p>如何从海量数据快速找到所需数据<br>
 分片：按照某种规则去划分数据，分散存储在多个节点上<br>
